@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prompt-expander"
+version = "1.0.0"
+description = "Local-first CLI to expand {{variables}} in prompt templates from CSV or JSON data."
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "MIT"}
+
+[project.scripts]
+prompt-expander = "prompt_expander.cli:main"
+
+[tool.setuptools]
+packages = ["prompt_expander"]
