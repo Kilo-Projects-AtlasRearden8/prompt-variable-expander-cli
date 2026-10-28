@@ -1,6 +1,6 @@
 """Template rendering for {{variable}} expansion."""
 
-from typing import Dict, Iterable, List
+from typing import Dict, List
 
 _VARIABLE_RE = __import__("re").compile(r"{{\s*([A-Za-z_][A-Za-z0-9_]*)\s*}}")
 

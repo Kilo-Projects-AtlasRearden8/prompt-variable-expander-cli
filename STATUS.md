@@ -2,7 +2,7 @@
 
 ## What was built
 
-A local-first Python CLI, `prompt-expander`, that expands `{{variables}}` in prompt templates using records from a CSV or JSON data file and writes one ready-to-use prompt file per record.
+A local-first Python CLI, `prompt-expander`, that expands `{{variables}} in prompt templates using records from a CSV or JSON data file and writes one ready-to-use prompt file per record.
 
 - `prompt_expander/renderer.py` — `{{variable}}` expansion (whitespace inside braces allowed, missing variables left unchanged), variable detection, unresolved-variable reporting
 - `prompt_expander/sources.py` — CSV (header row = variable names) and JSON (single object or list of objects) loaders
@@ -10,56 +10,49 @@ A local-first Python CLI, `prompt-expander`, that expands `{{variables}}` in pro
 - `prompt_expander/__main__.py` — `python -m prompt_expander` entry point
 - `pyproject.toml` — packaging with `prompt-expander` console script, stdlib-only dependencies
 - `tests/test_renderer.py`, `tests/test_cli.py` — 18 unittest tests, all passing
+- `examples/template.txt`, `examples/data.csv`, `examples/data.json` — ready-to-run example files
 - `README.md` — usage, examples, credits Asdale Dynamics, LLC
 - `LICENSE` — MIT, Copyright (c) 2026 Asdale Dynamics, LLC
+- `.gitignore` — excludes `__pycache__`, `*.pyc`, `output/`, `.env`
 - `STATUS.md` — this file
 
 ## How to run
 
 ```bash
-# From the repo root
-python3 -m prompt_expander --template template.txt --data leads.csv --out prompts
+# From the repo root (nothing to install)
+python3 -m prompt_expander --template template.txt --data data.csv --out output
 
-# Dry run (preview, no files written)
-python3 -m prompt_expander --template template.txt --data leads.json --dry-run
+# Try the included examples
+python3 -m prompt_expander --template examples/template.txt --data examples/data.csv --dry-run
+python3 -m prompt_expander --template examples/template.txt --data examples/data.csv --out output
 
-# Custom extension
-python3 -m prompt_expander --template template.txt --data data.csv --out output --ext .md
+# Or with JSON data
+python3 -m prompt_expander --template examples/template.txt --data examples/data.json --out output
 
-# Or install locally first
+# Install for the prompt-expander command
 pip install .
 prompt-expander --template template.txt --data data.csv --out output
 ```
 
-Template example:
-
-```
-Hi {{name}},
-
-Thanks for your interest in {{product}}.
-```
-
-Data example (CSV):
-
-```
-name,product
-Dylan,The Massive AI Manual
-Sam,The Massive AI Manual
-```
-
-Records with a `name`/`title` column produce files named after that value; otherwise `prompt_001.txt`, `prompt_002.txt`, ...
+| Option | What it does |
+|--------|--------------|
+| `--template` | Prompt template file with `{{variables}}` (required) |
+| `--data` | `.csv` or `.json` data file, one record per prompt (required) |
+| `--out` | Output directory (default: `output`) |
+| `--dry-run` | Preview what would be written without saving files |
+| `--ext` | Output file extension (default: `.txt`) |
 
 Local-first: standard library only, no network, no API keys, no secrets.
 
 ## Verification results
 
-- `python3 -m compileall -q prompt_expander tests` — OK
+- `python3 -m compileall -q prompt_expander tests examples` — OK
 - `python3 -m unittest discover -s tests -v` — 18 tests, OK
-- Manual smoke test — CSV input (2 files), JSON input (single object + list), `--dry-run` (no files written), all output contents verified correct
+- Manual smoke test — CSV input (3 files), JSON list input (3 files), `--dry-run` (no files written), all output contents verified correct
 
 ## Known gaps
 
 - No variable validation/fail-fast mode: unresolved `{{variables}}` are left unchanged in output rather than erroring
-- CSV encoding is hard-coded to UTF-8
+- CSV and JSON encoding is hard-coded to UTF-8
 - Output filenames from `name`/`title` are sanitized but not uniquified; duplicate names overwrite
 - No configuration file; CLI flags only

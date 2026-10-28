@@ -1,0 +1,7 @@
+Hi {{name}},
+
+Welcome to {{event}} on {{date}}.
+
+If you have any questions, just reply to this email and {{organizer}} will get back to you.
+
+See you there!
