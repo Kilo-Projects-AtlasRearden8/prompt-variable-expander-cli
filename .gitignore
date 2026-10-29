@@ -1,4 +1,8 @@
-__pycache__/
 *.pyc
-output/
 .env
+.env.*
+.venv/
+__pycache__/
+dist/*.tmp
+node_modules/
+output/
